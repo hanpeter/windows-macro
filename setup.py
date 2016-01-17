@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 VERSION = '0.0.1'
 
-REPO_URL = ''
+REPO_URL = 'https://github.com/hanpeter/windows-macro'
 
 DOWNLOAD_URL = '{repo_url}/tarball/release/{version}'.format(repo_url=REPO_URL, version=VERSION)
 
