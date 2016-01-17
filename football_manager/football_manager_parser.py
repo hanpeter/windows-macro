@@ -64,35 +64,35 @@ class FootballManagerParser(CSVParser):
 
     @classmethod
     def _parse_line(cls, line):
-        if line[0] in cls._ALL_ACTIONS:
-            move = getattr(cls, line[0].upper())
-            match_obj = cls.CLAUSE_MATCH_REGEX.match(line[1])
+        if line['action'] in cls._ALL_ACTIONS:
+            move = getattr(cls, line['action'].upper())
+            match_obj = cls.CLAUSE_MATCH_REGEX.match(line['attribute'])
             repeat = 1
 
-            if len(line) > 2:
-                repeat = int(line[2])
+            if len(line['repeat']) > 0:
+                repeat = int(line['repeat'])
 
             for i in range(0, repeat):
-                if line[0] == 'submit':
+                if line['action'] == 'submit':
                     Mouse.click(*cls.SUBMIT)
-                elif line[0] == 'select':
+                elif line['action'] == 'select':
                     x, y = cls._offset_click(move, match_obj.group(1), match_obj.group(2))
 
-                    option_index = int(line[3]) - 1
+                    option_index = int(line['arg1']) - 1
                     y += cls.OPTION_INTIAL_GAP + (cls.OPTION_GAP * option_index)
 
                     Mouse.click(x, y)
-                elif line[0] == 'add':
-                    x, y = move[line[1]]
+                elif line['action'] == 'add':
+                    x, y = move[line['attribute']]
                     Mouse.click(x, y)
 
-                    option_index = int(line[3]) - 1
+                    option_index = int(line['arg1']) - 1
                     y += cls.OPTION_INTIAL_GAP + (cls.OPTION_GAP * option_index)
 
                     Mouse.click(x, y)
                 else:
-                    if line[1] in move:
-                        x, y = move[line[1]]
+                    if line['attribute'] in move:
+                        x, y = move[line['attribute']]
                         Mouse.click(x, y)
                     elif match_obj is not None:
                         cls._offset_click(move, match_obj.group(1), match_obj.group(2))

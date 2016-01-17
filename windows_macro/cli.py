@@ -16,13 +16,13 @@ class Application(object):
         self.parser = ArgumentParser()
 
         self.parser.add_argument(
-            'script',
+            'csv',
             type=str,
-            help='Macro script to be run',
+            help='Macro csv script to be run',
         )
 
     def run(self):
-        CSVParser.parse(self.args.script)
+        CSVParser.parse(self.args.csv)
 
 
 def main():

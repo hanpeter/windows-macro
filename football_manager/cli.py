@@ -7,7 +7,7 @@ from football_manager.football_manager_parser import FootballManagerParser
 class Application(windows_macro.cli.Application):
 
     def run(self):
-        FootballManagerParser.parse(self.args.script)
+        FootballManagerParser.parse(self.args.csv)
 
 
 def main():

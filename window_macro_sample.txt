@@ -1,2 +1,0 @@
-focus "Football Manager 2013"
-click 1007 353
