@@ -7,25 +7,18 @@ lock loyalty
 increment agent 7
 lock agent
 lock status
-click 1005 525
-click 1005 950
+select clause1 1 20
 lock clause1
-click 340 525
-click 340 680
+select bonus1 1 7
 lock bonus1
-click 340 580
-click 340 890
+select bonus2 1 13
 increment bonus2
 lock bonus2
-click 340 635
-click 340 980
+select bonus3 1 16
 lock bonus3
-click 630 480
-click 630 570
+add bonus 1 4
 decrement bonus4 3
 lock bonus4
-click 1295 480
-click 1295 550
+add clause 1 3
 decrement clause2
 lock clause2
-submit

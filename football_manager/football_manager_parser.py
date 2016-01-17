@@ -36,45 +36,68 @@ class FootballManagerParser(CSVParser):
         'clause': (700, 500),
         'bonus': (35, 500),
     }
+    SELECT = {
+        'clause': (1005, 525),
+        'bonus': (340, 525),
+    }
+    ADD = {
+        'clause': (1295, 475),
+        'bonus': (630, 475),
+    }
     SUBMIT = (1200, 1050)
     CLAUSE_GAP = 55
-    CLAUSE_MATCH_REGEX = re.compile('^(clause|bonus|delete)(\d+)$')
+    CLAUSE_MATCH_REGEX = re.compile('^(clause|bonus)(\d+)$')
+    OPTION_INTIAL_GAP = 30
+    OPTION_GAP = 21
+
+    _ALL_ACTIONS = ['increment', 'decrement', 'lock', 'delete', 'select', 'add', 'submit']
+
+    @classmethod
+    def _offset_click(cls, move, attribute, str_index):
+        index = int(str_index) - 1
+        x = move[attribute][0]
+        y = move[attribute][1] + (cls.CLAUSE_GAP * index)
+
+        Mouse.click(x, y)
+
+        return (x, y)
 
     @classmethod
     def _parse_line(cls, line):
-        switch = {
-            'increment': cls.INCREMENT,
-            'decrement': cls.DECREMENT,
-            'lock': cls.LOCK,
-            'delete': cls.DELETE,
-        }
-        move = None
-        repeat = 1
+        if line[0] in cls._ALL_ACTIONS:
+            move = getattr(cls, line[0].upper())
+            match_obj = cls.CLAUSE_MATCH_REGEX.match(line[1])
+            repeat = 1
 
-        if len(line) > 2:
-            print line[2]
-            repeat = int(line[2])
+            if len(line) > 2:
+                repeat = int(line[2])
 
-        if line[0] in switch:
             for i in range(0, repeat):
-                move = switch[line[0]]
-                match_obj = cls.CLAUSE_MATCH_REGEX.match(line[1])
+                if line[0] == 'submit':
+                    Mouse.click(*cls.SUBMIT)
+                elif line[0] == 'select':
+                    x, y = cls._offset_click(move, match_obj.group(1), match_obj.group(2))
 
-                if line[1] in move:
-                    pos = move[line[1]]
-                    Mouse.click(*pos)
-                elif match_obj is not None:
-                    index = int(match_obj.group(2)) - 1
-                    x = move[match_obj.group(1)][0]
-                    y = move[match_obj.group(1)][1] + (cls.CLAUSE_GAP * index)
+                    option_index = int(line[3]) - 1
+                    y += cls.OPTION_INTIAL_GAP + (cls.OPTION_GAP * option_index)
+
+                    Mouse.click(x, y)
+                elif line[0] == 'add':
+                    x, y = move[line[1]]
                     Mouse.click(x, y)
 
-            return
-        elif line[0] == 'submit':
-            Mouse.click(*cls.SUBMIT)
-            return
+                    option_index = int(line[3]) - 1
+                    y += cls.OPTION_INTIAL_GAP + (cls.OPTION_GAP * option_index)
 
-        return super(FootballManagerParser, cls)._parse_line(line)
+                    Mouse.click(x, y)
+                else:
+                    if line[1] in move:
+                        x, y = move[line[1]]
+                        Mouse.click(x, y)
+                    elif match_obj is not None:
+                        cls._offset_click(move, match_obj.group(1), match_obj.group(2))
+        else:
+            super(FootballManagerParser, cls)._parse_line(line)
 
     @classmethod
     def parse(cls, file_path):
