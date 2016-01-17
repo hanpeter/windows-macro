@@ -32,8 +32,13 @@ class FootballManagerParser(CSVParser):
         'clause': (1330, 500),
         'bonus': (665, 500),
     }
+    DELETE = {
+        'clause': (700, 500),
+        'bonus': (35, 500),
+    }
+    SUBMIT = (1200, 1050)
     CLAUSE_GAP = 55
-    CLAUSE_MATCH_REGEX = re.compile('^(clause|bonus)(\d+)$')
+    CLAUSE_MATCH_REGEX = re.compile('^(clause|bonus|delete)(\d+)$')
 
     @classmethod
     def _parse_line(cls, line):
@@ -41,6 +46,7 @@ class FootballManagerParser(CSVParser):
             'increment': cls.INCREMENT,
             'decrement': cls.DECREMENT,
             'lock': cls.LOCK,
+            'delete': cls.DELETE,
         }
         move = None
         repeat = 1
@@ -63,6 +69,9 @@ class FootballManagerParser(CSVParser):
                     y = move[match_obj.group(1)][1] + (cls.CLAUSE_GAP * index)
                     Mouse.click(x, y)
 
+            return
+        elif line[0] == 'submit':
+            Mouse.click(*cls.SUBMIT)
             return
 
         return super(FootballManagerParser, cls)._parse_line(line)
