@@ -10,3 +10,22 @@ lock status
 click 1005 525
 click 1005 950
 lock clause1
+click 340 525
+click 340 680
+lock bonus1
+click 340 580
+click 340 890
+increment bonus2
+lock bonus2
+click 340 635
+click 340 980
+lock bonus3
+click 630 480
+click 630 570
+decrement bonus4 3
+lock bonus4
+click 1295 480
+click 1295 550
+decrement clause2
+lock clause2
+submit
