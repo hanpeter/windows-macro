@@ -1,0 +1,12 @@
+decrement wage
+lock wage
+increment year
+lock year
+decrement loyalty
+lock loyalty
+increment agent 7
+lock agent
+lock status
+click 1005 525
+click 1005 950
+lock clause1

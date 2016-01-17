@@ -21,7 +21,8 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'windows-macro = windows_macro.cli:main'
+            'windows-macro = windows_macro.cli:main',
+            'fm-macro = football_manager.cli:main',
         ]
     },
 )
