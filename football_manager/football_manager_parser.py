@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import re
+import time
 
 from windows_macro import Mouse, Window
 from windows_macro.csv_parser import CSVParser
@@ -51,6 +52,7 @@ class FootballManagerParser(CSVParser):
     OPTION_GAP = 21
 
     _ALL_ACTIONS = ['increment', 'decrement', 'lock', 'delete', 'select', 'add', 'submit']
+    _SUBMIT_DELAY = 1
 
     @classmethod
     def _offset_click(cls, move, attribute, str_index):
@@ -75,6 +77,7 @@ class FootballManagerParser(CSVParser):
             for i in range(0, repeat):
                 if line['action'] == 'submit':
                     Mouse.click(*cls.SUBMIT)
+                    time.sleep(cls._SUBMIT_DELAY)
                 elif line['action'] == 'select':
                     x, y = cls._offset_click(move, match_obj.group(1), match_obj.group(2))
 
